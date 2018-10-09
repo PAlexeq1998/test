@@ -1,0 +1,80 @@
+#include <iostream>
+#include <fstream>
+#include <cstring>
+
+using namespace std;
+
+int main(void)
+{
+    const int SIZE = 1000;
+    int msize = 0;
+    int counter = 0;
+    int yes = 0;
+    int i = 0, j= 0, p = 0;
+    int ccounter = 0;
+
+    char str[SIZE] = {0};
+    char word[SIZE] = {0};
+
+    ifstream inFile;
+    inFile.open("input.txt");// открытие файла
+
+    inFile.getline(str, SIZE); // запись строки в массив
+
+    int ssize = strlen(str); // подсчет длины строки
+    str[ssize] = ' ';
+
+    if(str[0] != ' ')
+    {
+        while(str[i] != ' ') // запись перовго слова как самого большого
+            {
+                word[j] = str[i];
+                i++;
+                j++;
+            }
+    }
+    else
+        yes--;
+
+    msize = i;
+    i = 0;
+    j = 0;
+
+    for(i = 0; i <= ssize; i++) // проверка на частоту встречания самого длинного слова
+    {
+        if((str[i] != ' ')&&(str[i] != '.'))
+            counter++;
+        else
+        {
+
+            if(counter > msize) // проверка - является ли новое слово самым длинным
+            {
+                for(j = 0, p = i - counter; j < counter; j++, p++)
+                    word[j] = str[p];
+                msize = counter;
+            }
+
+
+            if(counter == msize) // проверка на соответствие длины слова длине самого длинного слова
+            {
+
+                for(j = 0, p = i - counter; j < msize; j++, p++)
+                {
+                    if(str[p] == word[j]) // проверка на совпадние символов слова с самым длинным словом
+                        ccounter++;
+                    else
+                        break; // если не совпадает хоть один символ, выходим из цикла
+                }
+
+                if(ccounter == msize) // если все символы совпали, увеличиваем счетчик на один
+                    yes++;
+                ccounter = 0;
+            }
+            counter = 0;
+        }
+    }
+
+
+    cout << str << endl;
+    cout << "Max words - " << word << " was in text " << yes << " times.";
+}
